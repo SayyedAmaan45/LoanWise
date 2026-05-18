@@ -177,7 +177,8 @@ select:focus {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.35);
+  /* background: rgba(212, 175, 55, 0.35); */
+  background: red;
   border-radius: 999px;
 }
 
