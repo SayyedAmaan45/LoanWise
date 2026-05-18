@@ -1,33 +1,60 @@
 "use client";
+
 import React, { useState } from "react";
 import styles from "./Consultation.module.css";
+import { consultationApi } from "@/services/consultation.service";
+import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { consultationSchema } from "@/validations/consultation.validation";
+import { z } from "zod";
 
 const Consultation = () => {
-  const initialValue = {
-    fullName: "",
-    mobileNumber: "",
-    email: "",
-    loanType: "",
-    loanAmount: "",
-    yourMessage: "",
-  };
+  type ConsultationFormData = z.infer<
+    typeof consultationSchema
+  >;
 
-  const [formData, setFormData] = useState(initialValue);
+  const [loading, setLoading] =
+    useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ConsultationFormData>({
+    resolver: zodResolver(
+      consultationSchema
+    ),
+  });
+
+  const onSubmit = async (
+    data: ConsultationFormData
   ) => {
-    const { name, value } = e.target;
+    try {
+      setLoading(true);
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+      const response =
+        await consultationApi(data);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(formData);
+      if (response?.success) {
+        toast.success(
+          "Consultation Submitted 🚀"
+        );
+
+        reset();
+      } else {
+        toast.error(response?.message);
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast.error(
+        "Something went wrong!!"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,120 +63,283 @@ const Consultation = () => {
         <div className={styles.card}>
           {/* LEFT SIDE */}
           <div className={styles.leftContainer}>
-            <div className={styles.overlay}></div>
-
             <div className={styles.leftContent}>
-              <span className={styles.badge}>Expert Help</span>
+              <span className={styles.badge}>
+                Trusted Financial Platform
+              </span>
 
-              <h2>Get Expert Loan Consultation</h2>
+              <h2>
+                Make Better
+                <br />
+                Loan Decisions
+              </h2>
 
               <p>
-                Our certified loan experts are here to help you choose the
-                right loan and save more money.
+                Calculate EMI instantly and get
+                professional loan guidance
+                tailored to your financial goals.
               </p>
 
-              <ul>
-                <li>✓ Personalized Advice</li>
-                <li>✓ Best Interest Rates</li>
-                <li>✓ Quick Approval Help</li>
-                <li>✓ 100% Confidential</li>
-              </ul>
+              <div
+                className={styles.highlightGrid}
+              >
+                <div
+                  className={
+                    styles.highlightCard
+                  }
+                >
+                  <h3>50K+</h3>
+                  <span>
+                    EMI Calculations
+                  </span>
+                </div>
 
-              <div className={styles.illustration}>
-                💼🤝
+                <div
+                  className={
+                    styles.highlightCard
+                  }
+                >
+                  <h3>4.9★</h3>
+                  <span>
+                    Customer Rating
+                  </span>
+                </div>
+
+                <div
+                  className={
+                    styles.highlightCard
+                  }
+                >
+                  <h3>24/7</h3>
+                  <span>
+                    Expert Support
+                  </span>
+                </div>
+
+                <div
+                  className={
+                    styles.highlightCard
+                  }
+                >
+                  <h3>100%</h3>
+                  <span>
+                    Secure Process
+                  </span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* RIGHT SIDE */}
-          <div className={styles.rightContainer}>
+          <div
+            className={styles.rightContainer}
+          >
             <h2>Book a Free Consultation</h2>
+
             <p>
-              Fill in your details and our expert will get in touch with you.
+              Fill in your details and our
+              expert will get in touch with
+              you.
             </p>
 
-            <form onSubmit={handleSubmit}>
-              <div className={styles.inputGroup}>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div
+                className={styles.inputGroup}
+              >
                 <label>Full Name</label>
+
                 <input
                   type="text"
-                  name="fullName"
                   placeholder="Enter your name"
-                  value={formData.fullName}
-                  onChange={handleChange}
+                  {...register("fullName")}
+                  className={
+                    errors.fullName
+                      ? styles.inputError
+                      : ""
+                  }
                 />
+
+                {errors.fullName && (
+                  <p className={styles.error}>
+                    {
+                      errors.fullName
+                        ?.message
+                    }
+                  </p>
+                )}
               </div>
 
-              <div className={styles.inputGroup}>
+              <div
+                className={styles.inputGroup}
+              >
                 <label>Mobile Number</label>
+
                 <div className={styles.phoneWrap}>
                   <span>+91</span>
+
                   <input
                     type="text"
-                    name="mobileNumber"
                     placeholder="Enter mobile number"
-                    value={formData.mobileNumber}
-                    onChange={handleChange}
+                    {...register(
+                      "mobileNumber"
+                    )}
+                    className={
+                      errors.mobileNumber
+                        ? styles.inputError
+                        : ""
+                    }
                   />
                 </div>
+
+                {errors.mobileNumber && (
+                  <p className={styles.error}>
+                    {
+                      errors.mobileNumber
+                        ?.message
+                    }
+                  </p>
+                )}
               </div>
 
-              <div className={styles.inputGroup}>
+              <div
+                className={styles.inputGroup}
+              >
                 <label>Email Address</label>
+
                 <input
                   type="email"
-                  name="email"
                   placeholder="Enter email address"
-                  value={formData.email}
-                  onChange={handleChange}
+                  {...register("email")}
+                  className={
+                    errors.email
+                      ? styles.inputError
+                      : ""
+                  }
                 />
+
+                {errors.email && (
+                  <p className={styles.error}>
+                    {errors.email?.message}
+                  </p>
+                )}
               </div>
 
               <div className={styles.row}>
-                <div className={styles.inputGroup}>
+                <div
+                  className={styles.inputGroup}
+                >
                   <label>Loan Type</label>
+
                   <select
-                    name="loanType"
-                    value={formData.loanType}
-                    onChange={handleChange}
+                    {...register("loanType")}
+                    className={
+                      errors.loanType
+                        ? styles.inputError
+                        : ""
+                    }
                   >
-                    <option value="">Select loan type</option>
-                    <option>Home Loan</option>
-                    <option>Car Loan</option>
-                    <option>Personal Loan</option>
-                    <option>Business Loan</option>
+                    <option value="">
+                      Select loan type
+                    </option>
+
+                    <option>
+                      Home Loan
+                    </option>
+
+                    <option>
+                      Car Loan
+                    </option>
+
+                    <option>
+                      Personal Loan
+                    </option>
+
+                    <option>
+                      Business Loan
+                    </option>
                   </select>
+
+                  {errors.loanType && (
+                    <p className={styles.error}>
+                      {
+                        errors.loanType
+                          ?.message
+                      }
+                    </p>
+                  )}
                 </div>
 
-                <div className={styles.inputGroup}>
+                <div
+                  className={styles.inputGroup}
+                >
                   <label>Loan Amount</label>
+
                   <input
                     type="text"
-                    name="loanAmount"
                     placeholder="Enter amount"
-                    value={formData.loanAmount}
-                    onChange={handleChange}
+                    {...register(
+                      "loanAmount"
+                    )}
+                    className={
+                      errors.loanAmount
+                        ? styles.inputError
+                        : ""
+                    }
                   />
+
+                  {errors.loanAmount && (
+                    <p className={styles.error}>
+                      {
+                        errors.loanAmount
+                          ?.message
+                      }
+                    </p>
+                  )}
                 </div>
               </div>
 
-              <div className={styles.inputGroup}>
+              <div
+                className={styles.inputGroup}
+              >
                 <label>Your Message</label>
+
                 <textarea
                   rows={4}
-                  name="yourMessage"
                   placeholder="How can we help you?"
-                  value={formData.yourMessage}
-                  onChange={handleChange}
+                  {...register("message")}
+                  className={
+                    errors.message
+                      ? styles.inputError
+                      : ""
+                  }
                 ></textarea>
+
+                {errors.message && (
+                  <p className={styles.error}>
+                    {
+                      errors.message
+                        ?.message
+                    }
+                  </p>
+                )}
               </div>
 
-              <button type="submit" className={styles.btn}>
-                Request Callback
+              <button
+                type="submit"
+                className={styles.btn}
+                disabled={loading}
+              >
+                {loading
+                  ? "Submitting..."
+                  : "Request Callback"}
               </button>
 
               <p className={styles.note}>
-                🔒 We respect your privacy. Your information is safe with us
+                🔒 We respect your privacy.
+                Your information is safe with
+                us
               </p>
             </form>
           </div>

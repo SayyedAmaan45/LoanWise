@@ -11,7 +11,6 @@ export default function Home() {
       <ExploreMore />
       <WhyChooseUs />
       <Pricing variant="compact" />
-      <Footer/>
     </main>
   );
 }

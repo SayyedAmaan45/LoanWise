@@ -1,98 +1,153 @@
 .wrapper {
   padding: 100px 0;
-  background: #f8fafc;
+  background:
+    radial-gradient(circle at top right,
+      rgba(212, 175, 55, 0.08),
+      transparent 30%),
+    #060606;
 }
 
 .card {
   display: grid;
   grid-template-columns: 420px 1fr;
-  background: #fff;
+  background: #111111;
   border-radius: 28px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
 }
 
 /* LEFT */
 
 .leftContainer {
+  background:
+    linear-gradient(
+      180deg,
+      #0b0b0b,
+      #141414,
+      #1d1d1d
+    );
+
+  padding: 50px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  background: linear-gradient(135deg, #06122f, #091a45, #0b2a76);
-  padding: 45px 35px;
-  color: #fff;
   overflow: hidden;
+  border-right: 1px solid rgba(212, 175, 55, 0.12);
 }
 
-.overlay {
+.leftContainer::before {
+  content: "";
   position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at bottom right,
-    rgba(108, 76, 241, 0.18),
-    transparent 50%
-  );
+  width: 320px;
+  height: 320px;
+  background: rgba(212, 175, 55, 0.08);
+  border-radius: 50%;
+  top: -120px;
+  right: -120px;
+  filter: blur(10px);
+}
+
+.leftContainer::after {
+  content: "";
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  background: rgba(212, 175, 55, 0.05);
+  border-radius: 50%;
+  bottom: -100px;
+  left: -100px;
 }
 
 .leftContent {
   position: relative;
   z-index: 2;
+  text-align: center;
+  max-width: 340px;
 }
 
 .badge {
-  display: inline-block;
-  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(212, 175, 55, 0.12);
+  color: #f5d77b;
   font-size: 0.85rem;
   font-weight: 700;
+  margin-bottom: 24px;
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  backdrop-filter: blur(10px);
 }
 
 .leftContent h2 {
-  margin-top: 18px;
-  font-size: 2.2rem;
-  line-height: 1.2;
+  font-size: 2.5rem;
+  line-height: 1.15;
   font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 18px;
 }
 
 .leftContent p {
-  margin-top: 16px;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.72);
   line-height: 1.8;
-}
-
-.leftContent ul {
-  margin-top: 28px;
-  list-style: none;
-  padding: 0;
-}
-
-.leftContent ul li {
-  padding: 10px 0;
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.95);
 }
 
-.illustration {
-  margin-top: 45px;
-  font-size: 4rem;
-  text-align: center;
-  opacity: 0.9;
+.highlightGrid {
+  margin-top: 38px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.highlightCard {
+  background: rgba(255, 255, 255, 0.03);
+
+  border: 1px solid
+    rgba(212, 175, 55, 0.12);
+
+  border-radius: 18px;
+  padding: 18px 14px;
+  backdrop-filter: blur(12px);
+  transition: 0.3s ease;
+}
+
+.highlightCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(212, 175, 55, 0.35);
+}
+
+.highlightCard h3 {
+  color: #d4af37;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.highlightCard span {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
 }
 
 /* RIGHT */
 
 .rightContainer {
   padding: 45px;
+  background: #111111;
 }
 
 .rightContainer h2 {
   font-size: 2rem;
-  color: #0f172a;
+  color: #ffffff;
   font-weight: 800;
 }
 
 .rightContainer p {
   margin-top: 10px;
-  color: #64748b;
+  color: #9ca3af;
   margin-bottom: 28px;
 }
 
@@ -104,7 +159,7 @@
   display: block;
   margin-bottom: 8px;
   font-size: 0.92rem;
-  color: #334155;
+  color: #e5e7eb;
   font-weight: 600;
 }
 
@@ -112,40 +167,58 @@
 .inputGroup select,
 .inputGroup textarea {
   width: 100%;
-  border: 1px solid #e2e8f0;
+  border: 1px solid rgba(212, 175, 55, 0.14);
   border-radius: 14px;
   padding: 14px 16px;
   font-size: 0.95rem;
   outline: none;
   transition: 0.25s ease;
-  background: #fff;
+  background: #181818;
+  color: #ffffff;
+}
+
+.inputGroup input::placeholder,
+.inputGroup textarea::placeholder {
+  color: #777;
+}
+
+.inputGroup select {
+  color: #ffffff;
+}
+
+.inputGroup option {
+  background: #111111;
+  color: #ffffff;
 }
 
 .inputGroup input:focus,
 .inputGroup select:focus,
 .inputGroup textarea:focus {
-  border-color: #6c4cf1;
-  box-shadow: 0 0 0 4px rgba(108, 76, 241, 0.08);
+  border-color: #d4af37;
+  box-shadow: 0 0 0 4px
+    rgba(212, 175, 55, 0.12);
 }
 
 .phoneWrap {
   display: flex;
   align-items: center;
-  border: 1px solid #e2e8f0;
+  border: 1px solid rgba(212, 175, 55, 0.14);
   border-radius: 14px;
   overflow: hidden;
+  background: #181818;
 }
 
 .phoneWrap span {
   padding: 0 14px;
-  color: #334155;
+  color: #d4af37;
   font-weight: 700;
-  background: #f8fafc;
+  background: #141414;
 }
 
 .phoneWrap input {
   border: none !important;
   border-radius: 0;
+  background: transparent;
 }
 
 .row {
@@ -162,22 +235,52 @@
   cursor: pointer;
   font-size: 1rem;
   font-weight: 800;
-  color: #fff;
+  color: #111111;
   margin-top: 8px;
-  background: linear-gradient(135deg, #6c4cf1, #5b2dff);
+
+  background:
+    linear-gradient(
+      135deg,
+      #f5d77b,
+      #d4af37
+    );
+
   transition: 0.25s ease;
 }
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 18px 35px rgba(108, 76, 241, 0.25);
+
+  box-shadow: 0 18px 35px
+    rgba(212, 175, 55, 0.28);
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .note {
   text-align: center;
   margin-top: 18px;
   font-size: 0.9rem;
-  color: #64748b;
+  color: #9ca3af;
+}
+
+.inputError {
+  border: 1px solid #ff6b6b !important;
+
+  box-shadow: 0 0 0 3px
+    rgba(255, 107, 107, 0.08);
+}
+
+.error {
+  margin-top: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #ff6b6b;
+  line-height: 1.4;
 }
 
 /* RESPONSIVE */
@@ -186,10 +289,6 @@
   .card {
     grid-template-columns: 1fr;
   }
-
-  .leftContainer {
-    padding: 35px 28px;
-  }
 }
 
 @media (max-width: 768px) {
@@ -197,12 +296,14 @@
     padding: 70px 0;
   }
 
-  .rightContainer,
   .leftContainer {
+    display: none;
+  }
+
+  .rightContainer {
     padding: 28px 20px;
   }
 
-  .leftContent h2,
   .rightContainer h2 {
     font-size: 1.7rem;
   }
@@ -210,9 +311,5 @@
   .row {
     grid-template-columns: 1fr;
     gap: 0;
-  }
-
-  .illustration {
-    font-size: 3rem;
   }
 }

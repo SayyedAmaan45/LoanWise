@@ -45,7 +45,7 @@ export default function Footer() {
             <Link href="/">Home</Link>
             <Link href="/pricing">Pricing</Link>
             <Link href="/consultation">Consultation</Link>
-            <Link href="/contact">Contact</Link>
+            <Link href="/contact-us">Contact</Link>
           </div>
 
           <div className={styles.linkCol}>

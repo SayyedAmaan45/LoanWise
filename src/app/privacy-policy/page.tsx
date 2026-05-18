@@ -1,0 +1,9 @@
+import PrivacyPolicy from "@/components/privacyPolicy/PrivacyPolicy";
+
+export default function PrivacyPolicyPage() {
+  return (
+    <main className="section">
+        <PrivacyPolicy />
+    </main>
+  );
+}

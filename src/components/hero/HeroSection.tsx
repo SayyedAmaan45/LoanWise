@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import styles from "./Hero.module.css";
 import CountUp from "react-countup";
+import { calculateEMI } from "@/utils/calculateEMI";
+import { saveCalculation } from "@/services/calculation.service";
+import { toast } from "sonner";
 
 export default function HeroSection() {
   const InitialValue = {
@@ -17,89 +20,154 @@ export default function HeroSection() {
   };
 
   const [formData, setFormData] = useState(InitialValue);
+  const [isCalculated, setIsCalculated] =
+    useState(false);
+  const [loading, setLoading] =
+    useState(false);
+  const [hasChanges, setHasChanges] =
+    useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+    setHasChanges(true);
+
+    setIsCalculated(false);
 
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
-const handleLoanType = (type: string) => {
-  if (type === "Home Loan") {
-    setFormData((prev) => ({
-      ...prev,
-      loanType: type,
-      loanAmount: "2500000",
-      interestRate: "8.5",
-      loanTenure: "20",
-    }));
-  }
+  const handleLoanType = (type: string) => {
+    setIsCalculated(false);
+    setHasChanges(true);
 
-  if (type === "Personal Loan") {
-    setFormData((prev) => ({
-      ...prev,
-      loanType: type,
-      loanAmount: "500000",
-      interestRate: "14",
-      loanTenure: "5",
-    }));
-  }
 
-  if (type === "Car Loan") {
-    setFormData((prev) => ({
-      ...prev,
-      loanType: type,
-      loanAmount: "800000",
-      interestRate: "10",
-      loanTenure: "7",
-    }));
-  }
+    if (type === "Home Loan") {
+      setFormData((prev) => ({
+        ...prev,
+        loanType: type,
+        loanAmount: "2500000",
+        interestRate: "8.5",
+        loanTenure: "20",
+      }));
+    }
 
-  if (type === "EMI Calculator") {
-    setFormData((prev) => ({
-      ...prev,
-      loanType: type,
-      loanAmount: "2500000",
-      interestRate: "8.5",
-      loanTenure: "20",
-    }));
-  }
-};
+    if (type === "Personal Loan") {
+      setFormData((prev) => ({
+        ...prev,
+        loanType: type,
+        loanAmount: "500000",
+        interestRate: "14",
+        loanTenure: "5",
+      }));
+    }
+
+    if (type === "Car Loan") {
+      setFormData((prev) => ({
+        ...prev,
+        loanType: type,
+        loanAmount: "800000",
+        interestRate: "10",
+        loanTenure: "7",
+      }));
+    }
+
+    if (type === "EMI Calculator") {
+      setFormData((prev) => ({
+        ...prev,
+        loanType: type,
+        loanAmount: "2500000",
+        interestRate: "8.5",
+        loanTenure: "20",
+      }));
+    }
+  };
   const formatNumber = (num: string) =>
     Number(num).toLocaleString("en-IN");
 
-  useEffect(() => {
-    const P = Number(formData.loanAmount);
-    const annualRate = Number(formData.interestRate);
-    const years = Number(formData.loanTenure);
+  const handleCalculate = async () => {
+    try {
+      setLoading(true);
+      const result = calculateEMI(
+        Number(formData.loanAmount),
+        Number(formData.interestRate),
+        Number(formData.loanTenure)
+      );
 
-    if (!P || !annualRate || !years) return;
+      const updatedData = {
+        loanType: formData.loanType,
 
-    const r = annualRate / 12 / 100;
-    const n = years * 12;
+        currencyType:
+          formData.currencyType,
 
-    const emi =
-      (P * r * Math.pow(1 + r, n)) /
-      (Math.pow(1 + r, n) - 1);
+        loanAmount: Number(
+          formData.loanAmount
+        ),
 
-    const totalPayment = emi * n;
-    const totalInterest = totalPayment - P;
+        interestRate: Number(
+          formData.interestRate
+        ),
 
-    setFormData((prev) => ({
-      ...prev,
-      monthlyEmi: emi.toFixed(0),
-      totalPayment: totalPayment.toFixed(0),
-      totalInterest: totalInterest.toFixed(0),
-    }));
-  }, [
-    formData.loanAmount,
-    formData.interestRate,
-    formData.loanTenure,
-  ]);
+        loanTenure: Number(
+          formData.loanTenure
+        ),
+
+        monthlyEmi: Number(
+          result.monthlyEmi
+        ),
+
+        totalInterest: Number(
+          result.totalInterest
+        ),
+
+        totalPayment: Number(
+          result.totalPayment
+        ),
+      };
+
+      setFormData((prev) => ({
+        ...prev,
+        ...result,
+      }));
+
+      const response =
+        await saveCalculation(
+          updatedData
+        );
+
+      if (response?.success) {
+        setIsCalculated(true);
+
+        // toast.success(
+        //   "EMI Calculated Successfully 🚀"
+        // );
+      } else {
+        toast.error(
+          response?.message ||
+          "Failed to save calculation"
+        );
+      }
+
+      console.log(response);
+
+    } catch (error) {
+      console.log(error);
+
+      toast.error(
+        "Something went wrong!"
+      );
+    } finally {
+      setLoading(false);
+
+    }
+  };
+
+  //   useEffect(() => {
+  //   handleCalculate();
+  // }, []);
 
   return (
     <section className={styles.hero}>
@@ -227,19 +295,24 @@ const handleLoanType = (type: string) => {
                 <span>Your Monthly EMI</span>
 
                 <h2 className={styles.emiValue}>
-                  <span style={{ fontSize: '1.5rem' }}
-                  >
-                    {formData.currencyType === "Dollar"
-                      ? "$ "
-                      : "₹ "}
-                  </span>
+                  {isCalculated ? (
+                    <>
+                      <span style={{ fontSize: "1.5rem" }}>
+                        {formData.currencyType === "Dollar"
+                          ? "$ "
+                          : "₹ "}
+                      </span>
 
-                  <CountUp
-                    end={Number(formData.monthlyEmi)}
-                    duration={1}
-                    separator=","
-                    style={{ fontSize: '1.5rem' }}
-                  />
+                      <CountUp
+                        end={Number(formData.monthlyEmi)}
+                        duration={1}
+                        separator=","
+                        style={{ fontSize: "1.5rem" }}
+                      />
+                    </>
+                  ) : (
+                    "0"
+                  )}
                 </h2>
 
                 <div className={styles.row}>
@@ -249,11 +322,16 @@ const handleLoanType = (type: string) => {
                     {formData.currencyType === "Dollar"
                       ? "$"
                       : "₹"}{" "}
-                    <CountUp
-                      end={Number(formData.loanAmount)}
-                      duration={1}
-                      separator=","
-                    />
+
+                    {isCalculated ? (
+                      <CountUp
+                        end={Number(formData.loanAmount)}
+                        duration={1}
+                        separator=","
+                      />
+                    ) : (
+                      "0"
+                    )}
                   </strong>
                 </div>
 
@@ -264,11 +342,16 @@ const handleLoanType = (type: string) => {
                     {formData.currencyType === "Dollar"
                       ? "$"
                       : "₹"}{" "}
-                    <CountUp
-                      end={Number(formData.totalInterest)}
-                      duration={1}
-                      separator=","
-                    />
+                    {
+                      isCalculated ? (
+                        <CountUp
+                          end={Number(formData.totalInterest)}
+                          duration={1}
+                          separator=","
+                        />
+
+                      ) : ("0")
+                    }
                   </strong>
                 </div>
 
@@ -279,16 +362,28 @@ const handleLoanType = (type: string) => {
                     {formData.currencyType === "Dollar"
                       ? "$"
                       : "₹"}{" "}
-                    <CountUp
-                      end={Number(formData.totalPayment)}
-                      duration={1}
-                      separator=","
-                    />
+                    {
+                      isCalculated ? (
+                        <CountUp
+                          end={Number(formData.totalPayment)}
+                          duration={1}
+                          separator=","
+                        />
+                      ) : ("0")
+                    }
+
                   </strong>
                 </div>
 
-                <button className={styles.viewBtn}>
-                  View Amortization
+                <button
+                  onClick={handleCalculate}
+                  className={styles.viewBtn}
+                  disabled={loading || !hasChanges}
+
+                >
+                  {loading
+                    ? "Calculating..."
+                    : "Calculate EMI"}
                 </button>
               </div>
             </div>

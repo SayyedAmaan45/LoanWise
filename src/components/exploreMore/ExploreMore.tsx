@@ -2,8 +2,17 @@
 
 import React from "react";
 import styles from "./ExploreMore.module.css";
-import { FaCarAlt, FaUserAlt, FaArrowRight } from "react-icons/fa";
-import { IoHome, IoSchool } from "react-icons/io5";
+import {
+  FaCarAlt,
+  FaUserAlt,
+  FaArrowRight,
+} from "react-icons/fa";
+
+import {
+  IoHome,
+  IoSchool,
+} from "react-icons/io5";
+
 import { MdBusinessCenter } from "react-icons/md";
 
 const ExploreMore = () => {
@@ -49,16 +58,25 @@ const ExploreMore = () => {
     <section className={styles.explore}>
       <div className="container">
         <div className={styles.heading}>
-          <h2>Explore Our Calculators</h2>
+          <span>FINANCIAL TOOLS</span>
+
+          <h2>
+            Explore Our Loan Calculators
+          </h2>
+
           <p>
-            Choose from our wide range of financial
-            calculators
+            Powerful financial tools designed to
+            help you make smarter borrowing and
+            repayment decisions.
           </p>
         </div>
 
         <div className={styles.grid}>
           {calculators.map((item) => (
-            <div key={item.id} className={styles.card}>
+            <div
+              key={item.id}
+              className={styles.card}
+            >
               <div className={styles.icon}>
                 {item.icon}
               </div>
@@ -68,7 +86,7 @@ const ExploreMore = () => {
               <p>{item.subTitle}</p>
 
               <button>
-                Calculate Now{" "}
+                Calculate Now
                 <FaArrowRight />
               </button>
             </div>

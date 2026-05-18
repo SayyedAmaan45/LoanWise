@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
+import { Toaster } from "sonner";
+import Footer from "@/components/footer/Footer";
 
 export const metadata: Metadata = {
   title: "LoanWise | Smart Loan Calculator & Consultation",
@@ -57,6 +59,8 @@ export default function RootLayout({
       <body>
         <Navbar />
         {children}
+        <Toaster richColors position="top-right" />
+        <Footer />
       </body>
     </html>
   );

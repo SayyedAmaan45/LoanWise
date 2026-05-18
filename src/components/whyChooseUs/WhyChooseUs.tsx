@@ -2,10 +2,12 @@ import {
   IoShieldCheckmarkSharp,
   IoTrendingUp,
 } from "react-icons/io5";
+
 import {
   FaUserTie,
   FaFileDownload,
 } from "react-icons/fa";
+
 import styles from "./WhyChooseUs.module.css";
 
 export default function WhyChooseUs() {
@@ -15,7 +17,7 @@ export default function WhyChooseUs() {
       icon: <IoTrendingUp />,
       title: "Accurate Calculations",
       subTitle:
-        "Advanced EMI formulas with instant results for loans, affordability and repayment planning.",
+        "Advanced EMI formulas with instant results for loans, affordability, and repayment planning.",
     },
     {
       id: 2,
@@ -36,7 +38,7 @@ export default function WhyChooseUs() {
       icon: <FaFileDownload />,
       title: "Save & Download",
       subTitle:
-        "Store calculations, compare reports and download summaries whenever needed.",
+        "Store calculations, compare reports, and download summaries whenever needed.",
     },
   ];
 
@@ -44,22 +46,32 @@ export default function WhyChooseUs() {
     <section className={styles.whyChooseUs}>
       <div className="container">
         <div className={styles.top}>
-          <span className={styles.badge}>Why Choose Us</span>
+          <span className={styles.badge}>
+            WHY LOANWISE
+          </span>
 
           <h2 className={styles.heading}>
-            Why Choose <span>LoanWise</span>
+            Smart Financial Tools
+            <span> Built For Modern Borrowers</span>
           </h2>
 
           <p className={styles.desc}>
-            Everything you need to calculate smarter, borrow confidently,
-            and make better financial decisions.
+            Experience secure, intelligent, and
+            professional loan management tools
+            designed to simplify your financial
+            journey.
           </p>
         </div>
 
         <div className={styles.grid}>
           {whyChooseUsList.map((item) => (
-            <div className={styles.card} key={item.id}>
-              <div className={styles.icon}>{item.icon}</div>
+            <div
+              className={styles.card}
+              key={item.id}
+            >
+              <div className={styles.icon}>
+                {item.icon}
+              </div>
 
               <h3>{item.title}</h3>
 
