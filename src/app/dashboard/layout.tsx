@@ -1,10 +1,11 @@
+
+import styles from "./dashboard.module.css";
 import {
   cookies,
 } from "next/headers";
-
 import { redirect } from "next/navigation";
-
 import jwt from "jsonwebtoken";
+import DashboardShell from "@/components/dashboard/dashboardShell/DashboardShell";
 
 export default async function DashboardLayout({
   children,
@@ -18,7 +19,6 @@ export default async function DashboardLayout({
   const token =
     cookieStore.get("token")?.value;
 
-  // No token
   if (!token) {
     redirect("/login");
   }
@@ -32,17 +32,19 @@ export default async function DashboardLayout({
       role: string;
     };
 
-    // Not admin
     if (
       decoded.role !== "admin"
     ) {
       redirect("/");
     }
 
-  } catch (error) {
-
+  } catch {
     redirect("/login");
   }
 
-  return <>{children}</>;
+ return (
+  <DashboardShell>
+    {children}
+  </DashboardShell>
+);
 }
