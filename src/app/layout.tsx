@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/navbar/Navbar";
+import Navbar from "@/components/layout/navbar/Navbar";
 import { Toaster } from "sonner";
-import Footer from "@/components/footer/Footer";
+import Footer from "@/components/layout/footer/Footer";
 
 export const metadata: Metadata = {
   title: "LoanWise | Smart Loan Calculator & Consultation",

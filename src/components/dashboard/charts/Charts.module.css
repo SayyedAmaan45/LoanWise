@@ -1,0 +1,25 @@
+.chartCard {
+  padding: 28px;
+
+  border-radius: 28px;
+
+  background: linear-gradient(
+    180deg,
+    #111111,
+    #181818
+  );
+
+  border: 1px solid
+    rgba(212, 175, 55, 0.12);
+}
+
+.chartHeader {
+  margin-bottom: 22px;
+}
+
+.chartHeader h3 {
+  color: #ffffff;
+
+  font-size: 1.15rem;
+  font-weight: 700;
+}

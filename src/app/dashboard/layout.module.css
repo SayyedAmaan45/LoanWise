@@ -1,0 +1,17 @@
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  background: #0a0a0a;
+}
+
+.main {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+@media (max-width: 992px) {
+  .main {
+    padding: 20px;
+  }
+}

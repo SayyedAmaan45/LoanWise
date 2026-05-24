@@ -1,0 +1,28 @@
+.header h1 {
+  color: #ffffff;
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+.header p {
+  margin-top: 8px;
+  color: #a1a1aa;
+}
+
+.table {
+  margin-top: 28px;
+
+  min-height: 500px;
+
+  border-radius: 28px;
+
+  background: #111111;
+
+  border: 1px solid rgba(212, 175, 55, 0.12);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #71717a;
+}

@@ -1,0 +1,65 @@
+.card {
+  padding: 28px;
+
+  border-radius: 28px;
+
+  background: linear-gradient(
+    180deg,
+    #111111,
+    #181818
+  );
+
+  border: 1px solid
+    rgba(212, 175, 55, 0.12);
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+
+  border-color:
+    rgba(212, 175, 55, 0.35);
+
+  box-shadow:
+    0 20px 40px
+    rgba(0,0,0,0.35);
+}
+
+.icon {
+  width: 64px;
+  height: 64px;
+
+  border-radius: 18px;
+
+  background:
+    rgba(212,175,55,0.12);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #f5d76e;
+
+  font-size: 1.5rem;
+}
+
+.card h3 {
+  color: #a1a1aa;
+  font-size: 0.95rem;
+}
+
+.card span {
+  display: block;
+
+  margin-top: 10px;
+
+  color: #ffffff;
+
+  font-size: 2rem;
+  font-weight: 800;
+}
